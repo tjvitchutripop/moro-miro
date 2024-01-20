@@ -8,12 +8,14 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "dotenv": "^16.3.2",
     "mirotone": "5",
+    "openai": "^4.24.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "vite": "3.0.3",
-    "@vitejs/plugin-react": "^2.2.0"
+    "@vitejs/plugin-react": "^2.2.0",
+    "vite": "3.0.3"
   }
 }
