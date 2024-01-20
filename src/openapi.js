@@ -1,6 +1,28 @@
 import OpenAI from "openai";
 
 
+export async function VerifyAPIKey(apiKey){
+    var validAPIKey = false;
+
+    const openai = new OpenAI({
+        apiKey: apiKey,
+        dangerouslyAllowBrowser: true
+    });   
+
+
+    var dataObject = {
+        messages: [{ role: "user", content: "This is a test." }],
+        model: "davinci-00"
+    }
+    try{
+    const chatCompletion = await openai.chat.completions.create(dataObject);
+    validAPIKey = true;
+    }
+    catch{
+        // validAPIKey remains false.
+    }
+    return validAPIKey;
+}
 
 export async function getChatCompletion(apiKey, message, tool_choice){
     const openai = new OpenAI({

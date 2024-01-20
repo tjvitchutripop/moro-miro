@@ -1,6 +1,6 @@
 import {useEffect, useState}from 'react';
 import {createRoot} from 'react-dom/client';
-import { getChatCompletion } from './openapi';
+import { VerifyAPIKey, getChatCompletion } from './openapi';
 import '../src/assets/style.css';
 
 function calculateRowsColumns(totalCards) {
@@ -53,8 +53,13 @@ const App = () => {
     let ideas = ["test1", "test2", "test3","test1", "test2", "test3","test1", "test2", "test3","test2", "test3"]
     let cards = [{title:"test", description: 'hello world', dueDate: '2021-08-29'}, {title:"test2", description: 'hello world2'}, {title:"test3", description: 'hello world3', dueDate: '2021-08-29'}]
 
-    const [productIdea, setProductIdea] = useState("")
-    const [apiKey, setAPIKey] = useState("")
+    const [productIdea, setProductIdea] = useState("");
+    const [apiKey, setAPIKey] = useState("");
+    const [apiKeyValid, setapiKeyValid] = useState(false);
+
+    function handleAPIKeyChange(apiKey){
+
+    }
 
     async function generateIdeas(){
       var generatePrompt = "Generate 5 to 7 different additional feature ideas as sticky notes for the following project idea as brief sentences. Each sentence must be separated by a dollar sign to allow the function to work properly. Idea: '''".concat(productIdea, "'''");
@@ -62,7 +67,6 @@ const App = () => {
 
       getChatCompletion(apiKey, generatePrompt, toolChoice).then(chatCompletion => {
         var chatCompletionJson = JSON.parse(JSON.stringify(chatCompletion));
-        console.log(chatCompletionJson);
         var toolCalls = chatCompletionJson.choices[0].message.tool_calls;
     
         toolCalls.forEach((obj) => {
@@ -86,9 +90,10 @@ const App = () => {
 
   return (
     <div>
-      <h1>Moro-Miro</h1>
+      <h3>API Key</h3>
       <input onChange={(event) => {setAPIKey(event.target.value)}} placeholder='Enter API Key'></input>
-      <p>Click the button to add sticky notes</p>
+      <button>Confirm API Key</button>
+
       <p>PRODUCT IDEA: {productIdea}</p>
       <input onChange={(event) => {setProductIdea(event.target.value)}}></input>
       <button className="btn btn-primary" onClick={()=>addStickyNotes(ideas)}>
