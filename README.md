@@ -1,5 +1,12 @@
 ## Moro Miro
 
+A LLM-enabled Natural Language assistant designed to guide you throughout your product development journey in Miro. 
+
+## How to Use
+
+Within your Miro board, add Moro-Miro to your tool sidebar from More Apps. There, you need to provide your OpenAI API key before using Moro-Miro's services. Once verified, provide your project description, inquiries, and needs to receive personalized insightful suggestions on necessary steps to take. If necessary, you may click on 'Generate a Template' button to provide you guidance on tasks to achieve.
+
+
 **&nbsp;ℹ&nbsp;Note**:
 
 - We recommend a Chromium-based web browser for local development with HTTP. \
