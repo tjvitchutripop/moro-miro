@@ -8,11 +8,6 @@ A LLM-enabled Natural Language assistant designed to guide you throughout your p
 - [Technologies Used](#technologies-used)
 
 ## Installation 
-**&nbsp;ℹ&nbsp;Note**:
-
-- We recommend a Chromium-based web browser for local development with HTTP. \
-  Safari enforces HTTPS; therefore, it doesn't allow localhost through HTTP.
-- For more information, visit our [developer documentation](https://developers.miro.com).
 
 **How to Start Locally**:
 
@@ -52,7 +47,11 @@ If you want to modify the `vite.config.js` configuration, see the [Vite document
 ├── app.html       // The app itself. It's loaded on the board inside the 'appContainer'
 └── index.html     // The app entry point. This is what you specify in the 'App URL' box in the Miro app settings
 ```
+**Note**:
 
+- We recommend a Chromium-based web browser for local development with HTTP. \
+  Safari enforces HTTPS; therefore, it doesn't allow localhost through HTTP.
+- For more information, visit our [developer documentation](https://developers.miro.com).
 
 ## Usage
 To plan and organize tasks necessary to achieve in Product Development Cycle (PDC), first open Moro-Miro in the Miro Board project from the tools sidebar panel. To access Moro-Miro and its services, provide your OpenAI API key. Once verified and authorized, input your project description and needs. Moro-Miro will analyze and deliver personalized insightful suggesstions on steps you can take. You may also request Moro-Miro to generate its tailored template of a suggested step if in need of further assistance and guidance. 
