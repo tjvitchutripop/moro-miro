@@ -21,49 +21,49 @@ export async function VerifyAPIKey(apiKey) {
     }
 }
 
-export async function getChatCompletion(apiKey, message, tool_choice){
+export async function getChatCompletion(API_KEY, message, tool_choice, model="gpt-3.5-turbo-1106"){
     const openai = new OpenAI({
-        apiKey: apiKey,
+        apiKey: API_KEY,
         dangerouslyAllowBrowser: true
     });
-    // var returnX = {
-    //     "id": "chatcmpl-8j2sAY0A9uphxEpTwY3IVEDF3IAGn",
-    //     "object": "chat.completion",
-    //     "created": 1705746494,
-    //     "model": "gpt-3.5-turbo-0613",
-    //     "choices": [
-    //         {
-    //             "index": 0,
-    //             "message": {
-    //                 "role": "assistant",
-    //                 "content": null,
-    //                 "tool_calls": [
-    //                     {
-    //                         "id": "call_NJDKdc2Y34b98BKGMa1w5CXB",
-    //                         "type": "function",
-    //                         "function": {
-    //                             "name": "create_sticky_note",
-    //                             "arguments": "{\n  \"text\": \"John Cena\"\n}"
-    //                         }
-    //                     }
-    //                 ]
-    //             },
-    //             "logprobs": null,
-    //             "finish_reason": "tool_calls"
-    //         }
-    //     ],
-    //     "usage": {
-    //         "prompt_tokens": 79,
-    //         "completion_tokens": 18,
-    //         "total_tokens": 97
-    //     },
-    //     "system_fingerprint": null
-    // }
+//     var returnX = {
+//     "id": "chatcmpl-8jL7eEMo59RRus3u26ijvecOrwxg4",
+//     "object": "chat.completion",
+//     "created": 1705816646,
+//     "model": "gpt-3.5-turbo-1106",
+//     "choices": [
+//         {
+//             "index": 0,
+//             "message": {
+//                 "role": "assistant",
+//                 "content": null,
+//                 "tool_calls": [
+//                     {
+//                         "id": "call_nuizEnYR6QPrMctUVtbsoApo",
+//                         "type": "function",
+//                         "function": {
+//                             "name": "create_user_journey_object",
+//                             "arguments": "{\"user_journey_string\":\"Sign Up$Book a Ride$Track Ride$Payment\",\"user_epic_string\":\"Sign Up:User Onboarding$Book a Ride:Ride Searching and Booking$Track Ride:Ride Tracking and Status$Payment:Payment and Transactions\",\"user_story_string\":\"User Onboarding:Create Account:Sign up with email and password$User Onboarding:Mobile Verification:Verify phone number for account creation$Ride Searching and Booking:Search for Ride:Find available rides based on location$Ride Searching and Booking:Select Ride:Choose preferred ride option$Ride Tracking and Status:Track Ride:View real-time location of the ride$Payment:Payment Options:Choose payment method$Payment:Complete Transaction:Finalize ride payment\"}"
+//                         }
+//                     }
+//                 ]
+//             },
+//             "logprobs": null,
+//             "finish_reason": "stop"
+//         }
+//     ],
+//     "usage": {
+//         "prompt_tokens": 369,
+//         "completion_tokens": 154,
+//         "total_tokens": 523
+//     },
+//     "system_fingerprint": "fp_aaa20cc2ba"
+// }
 
-    // return returnX;
+//     return returnX;
     var dataObject = {
         messages: [{ role: "user", content: message }],
-        model: "gpt-3.5-turbo-1106",
+        model: model,
         tools: toolsList
     }
 
@@ -94,6 +94,47 @@ export const toolsList = [
             }
         }
     },
+
+    {
+        "type": "function",
+        "function": {
+            "name": "create_user_journey_object",
+            "description": "This function creates the user journey object within the user's board.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    
+                    "user_story_string":{
+                        "type":"string",
+                        "description": "This string contains user stories separated by dollar signs."
+                    }
+                },
+                "required": ["user_story_string"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "create_pros_and_cons",
+            "description": "This function creates the pros and cons for the product idea..",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "pros_string": {
+                        "type": "string",
+                        "description": "This string contains all the pros of the product idea, separated by dollar signs.."
+                    },
+                    "cons_string":{
+                        "type": "string",
+                        "description": "This string contains all the cons of the product idea, separated by dollar signs."
+                    }
+                },
+                "required": ["pros_string", "cons_string"]
+            }
+        }
+    }
+
 ];
 
 // export const tools = [
