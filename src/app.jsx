@@ -50,15 +50,35 @@ async function addCards(cards){
 }
 
 const App = () => {
-    let ideas = ["test1", "test2", "test3","test1", "test2", "test3","test1", "test2", "test3","test2", "test3"]
+    const GenerateModes = ["Feature Ideas", "User Stories"];
     let cards = [{title:"test", description: 'hello world', dueDate: '2021-08-29'}, {title:"test2", description: 'hello world2'}, {title:"test3", description: 'hello world3', dueDate: '2021-08-29'}]
 
     const [productIdea, setProductIdea] = useState("");
     const [apiKey, setAPIKey] = useState("");
-    const [apiKeyValid, setapiKeyValid] = useState(false);
+    const [apiKeyValid, setapiKeyValid] = useState(null);
+    const [ideaConfirmed, setIdeaConfirmed] = useState(false);
+    const [generate, setGenerate] = useState(false);
+    const [generateMode, setGenerateMode] = useState("");
+    const [suggestion, setSuggestion] = useState(null);
 
-    function handleAPIKeyChange(apiKey){
+    useEffect(() => { 
+      if(ideaConfirmed == true){
+        generateSuggestion();
+      }
+    },[ideaConfirmed]);
 
+    useEffect(() => { 
+      if(generateMode == "Feature Ideas"){
+        generateIdeas();
+      }
+      if(generateMode == "User Stories"){
+      }
+      setGenerate(false);
+    },[generate]);
+
+    async function verifyAPIKey(){
+      let isValid = await VerifyAPIKey(apiKey);
+      setapiKeyValid(isValid);
     }
 
     async function generateIdeas(){
@@ -86,27 +106,74 @@ const App = () => {
         console.error("Error:", error);
     });
     }
+
+    async function generateSuggestion(){
+      var new_suggestion = {};
+      GenerateModes.forEach((g) => {
+        var generatePrompt = "Provide tips for the following project idea given that the developers are interested in coming up with ".concat(g,". Do not engage in conversation and provide high level advice in paragraph form. Idea: '''",productIdea, "'''");
+        getChatCompletion(apiKey, generatePrompt, "none")
+        .then(chatCompletion => {
+          var chatCompletionJson = JSON.parse(JSON.stringify(chatCompletion))  
+          new_suggestion[g] = chatCompletionJson.choices[0].message.content
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+      })
+      setSuggestion(new_suggestion);
+    }
    
 
   return (
     <div>
-      <h3>API Key</h3>
-      <input onChange={(event) => {setAPIKey(event.target.value)}} placeholder='Enter API Key'></input>
-      <button>Confirm API Key</button>
-
-      <p>PRODUCT IDEA: {productIdea}</p>
-      <input onChange={(event) => {setProductIdea(event.target.value)}}></input>
-      <button className="btn btn-primary" onClick={()=>addStickyNotes(ideas)}>
-        Add sticky notes
-      </button>
-      <button className="btn btn-primary" onClick={()=>addCards(cards)}>
-        Add cards
-      </button>
-
-      <button className="btn btn-primary" onClick={() => generateIdeas()}>
-        Generate Ideas
-
-      </button>
+      {/* Welcome Page */}
+      {apiKeyValid != true && 
+      <div>
+      <h1>Welcome to Moro-Miro!</h1>
+      <div class={apiKeyValid == false?"form-group error":"form-group"}>
+        <input id="error-1" class="input" onChange={(event) => {setAPIKey(event.target.value)}} placeholder='Enter your API Key'></input>
+        {apiKeyValid == false && <div class="status-text">Invalid API Key</div>}
+        <button style={{marginTop:10}} class="button button-primary" onClick={()=>{verifyAPIKey()}}>Submit</button>
+      </div>
+      </div>
+      }
+      {/* Idea Submission Page */}
+      {apiKeyValid == true && ideaConfirmed == false &&
+        <div>
+          <h1>Moro! How can I help you today?</h1>
+          <textarea class="textarea" placeholder="What are you imagining..." onChange={(event) => {setProductIdea(event.target.value)}}></textarea>
+          <button class="button button-primary" style={{marginTop:10}} onClick={()=>setIdeaConfirmed(true)}> Enter Idea </button>
+        </div>
+      }
+      {/* Loading Screen */}
+      {
+        ideaConfirmed == true && suggestion == null &&
+        <button class="button button-primary button-loading" type="button"></button>
+      }
+      {/* Menu for next steps */}
+      { ideaConfirmed == true && generateMode == "" &&
+      <div>
+        <h2 style={{marginTop:-10}}>Your Idea</h2>
+        <p style={{marginTop:-10, marginBottom:30}}>{productIdea}</p>
+        <h2>Next Steps</h2>
+        <p style={{marginTop:-10, marginBottom:30}}>Here are a couple of steps you can take to further develop your project.</p>
+        <div style={{textAlign:"center"}}>
+          <button class="button button-primary" onClick={() => setGenerateMode("Feature Ideas")} style={{width:300}}>Feature Ideas <span class="icon-arrow-right"></span></button>
+          <br/>
+          <button class="button button-primary" onClick={() => setGenerateMode("User Stories")} style={{width:300}}>User Stories <span class="icon-arrow-right"></span></button>
+          <br/>
+          <br/>
+        </div>
+      </div>
+      }
+      {/* Generate Mode Screen */}
+      {generateMode != "" &&
+      <div>
+        <button class="button button-tertiary" onClick={() => {setGenerateMode("")}} style={{width:300, color:"#fffff"}}> <span class="icon-arrow-left"></span> Back to Menu</button>
+        <h2 style={{marginTop:-10}}>{generateMode}</h2>
+        <p style={{marginTop:-10, marginBottom:30}}>{suggestion[generateMode]}</p>
+        <button class="button button-primary" onClick={() => {setGenerate(true)}} style={{width:300}}> Generate </button>
+      </div>}
     </div>
   );
 };

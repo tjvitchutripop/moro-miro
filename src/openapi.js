@@ -1,27 +1,24 @@
 import OpenAI from "openai";
 
 
-export async function VerifyAPIKey(apiKey){
-    var validAPIKey = false;
-
+export async function VerifyAPIKey(apiKey) {
     const openai = new OpenAI({
         apiKey: apiKey,
         dangerouslyAllowBrowser: true
-    });   
+    });
 
+    const dataObject = {
+        messages: [{ role: 'system', content: 'This is a test' }],
+        model: 'gpt-3.5-turbo-1106' 
+    };
 
-    var dataObject = {
-        messages: [{ role: "user", content: "This is a test." }],
-        model: "davinci-00"
+    try {
+        await openai.chat.completions.create(dataObject);
+        return true; // If the request is successful, the key is considered valid
+    } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message);
+        return false; // If there's an error, the key is considered invalid
     }
-    try{
-    const chatCompletion = await openai.chat.completions.create(dataObject);
-    validAPIKey = true;
-    }
-    catch{
-        // validAPIKey remains false.
-    }
-    return validAPIKey;
 }
 
 export async function getChatCompletion(apiKey, message, tool_choice){
