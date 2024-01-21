@@ -20,7 +20,6 @@ const functionNameMapping = {
 }
 
 async function addUserStoryShapesAndCards(userStoryList){
-  console.log(userStoryList);
   userStoryList.unshift("Example User Stories");
   const defaultCardHeight = 94;
   const defaultCardWidth = 500;
@@ -37,7 +36,6 @@ async function addUserStoryShapesAndCards(userStoryList){
     })
   
   curr_row++;
-  console.log(curr_row);
   })
 
 }
@@ -181,7 +179,6 @@ const App = () => {
       var toolChoice = {"type": "function", "function": {"name": "create_user_journey_object"}};
 
       getChatCompletion(apiKey, generatePrompt, toolChoice, "gpt-4").then(chatCompletion => {
-        console.log(chatCompletion);
         var chatCompletionJson = JSON.parse(JSON.stringify(chatCompletion));
         var toolCalls = chatCompletionJson.choices[0].message.tool_calls; 
 
@@ -231,12 +228,10 @@ const App = () => {
 
     async function generateSuggestion(){
       var new_suggestion = {};
-      console.log(apiKey);
       GenerateModes.forEach((g) => {
         var generatePrompt = "Provide brief and concise tips for the following project idea given that the developers are interested in coming up with ".concat(g,". Respond with why it is important for the user's product idea. Do not engage in conversation and speak in a passive voice. Provide high level advice in paragraph form. Idea: '''",productIdea, "'''");
         getChatCompletion(apiKey, generatePrompt,  "none", "gpt-3.5-turbo-1106")
         .then(chatCompletion => {
-          console.log(chatCompletion);
           var chatCompletionJson = JSON.parse(JSON.stringify(chatCompletion))  
           new_suggestion[g] = chatCompletionJson.choices[0].message.content
         })
