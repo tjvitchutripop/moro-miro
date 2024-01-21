@@ -2,18 +2,19 @@
 
 A LLM-enabled Natural Language assistant designed to guide you throughout your product development journey in Miro. 
 
-## How to Use
+## Table of Contents
+- [Installation](#installation)
+- [Usage](#usage)
+- [Technologies Used](#technologies-used)
 
-Within your Miro board, add Moro-Miro to your tool sidebar from More Apps. There, you need to provide your OpenAI API key before using Moro-Miro's services. Once verified, provide your project description, inquiries, and needs to receive personalized insightful suggestions on necessary steps to take. If necessary, you may click on 'Generate a Template' button to provide you guidance on tasks to achieve.
-
-
+## Installation 
 **&nbsp;ℹ&nbsp;Note**:
 
 - We recommend a Chromium-based web browser for local development with HTTP. \
   Safari enforces HTTPS; therefore, it doesn't allow localhost through HTTP.
 - For more information, visit our [developer documentation](https://developers.miro.com).
 
-### How to start locally
+**How to Start Locally**:
 
 - Run `npm i` to install dependencies.
 - Run `npm start` to start developing. \
@@ -26,13 +27,18 @@ Within your Miro board, add Moro-Miro to your tool sidebar from More Apps. There
 - Open a board; you should see your app in the app toolbar or in the **Apps**
   panel.
 
-### How to build the app
+**How to Build the App**:
 
 - Run `npm run build`. \
   This generates a static output inside [`dist/`](./dist), which you can host on a static hosting
   service.
 
-### Folder structure
+Built using [`create-miro-app`](https://www.npmjs.com/package/create-miro-app).
+
+This app uses [Vite](https://vitejs.dev/). \
+If you want to modify the `vite.config.js` configuration, see the [Vite documentation](https://vitejs.dev/guide/).
+
+**Folder structure**:
 
 <!-- The following tree structure is just an example -->
 
@@ -47,13 +53,9 @@ Within your Miro board, add Moro-Miro to your tool sidebar from More Apps. There
 └── index.html     // The app entry point. This is what you specify in the 'App URL' box in the Miro app settings
 ```
 
-### About the app
 
-This sample app provides you with boilerplate setup and configuration that you can further customize to build your own app.
+## Usage
+To plan and organize tasks necessary to achieve in Product Development Cycle (PDC), first open Moro-Miro in the Miro Board project from the tools sidebar panel. To access Moro-Miro and its services, provide your OpenAI API key. Once verified and authorized, input your project description and needs. Moro-Miro will analyze and deliver personalized insightful suggesstions on steps you can take. You may also request Moro-Miro to generate its tailored template of a suggested step if in need of further assistance and guidance. 
 
-<!-- describe shortly the purpose of the sample app -->
-
-Built using [`create-miro-app`](https://www.npmjs.com/package/create-miro-app).
-
-This app uses [Vite](https://vitejs.dev/). \
-If you want to modify the `vite.config.js` configuration, see the [Vite documentation](https://vitejs.dev/guide/).
+## Technologies Used
+To turn Moro-Miro into reality, we utilized React.js to create a workflow that allows Moro-Miro to make calls to OpenAI's GPT API, taking advantage of both GPT-3 and GPT-4 models. Figma was used in conjunction with the Miro UI library to aid in the design of the user experience and user interface to make Moro-Miro more appealing to its users and user-friendly. 
